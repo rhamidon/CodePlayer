@@ -48,6 +48,18 @@
 		.highlightedButton {
 			background-color: grey;
 		}
+		.panel {
+			float: left;
+			width: 50%;
+		}
+		#htmlPanel {
+			resize: none;
+			border-top: none;
+			border-color: grey;
+		}
+		iframe {
+			border: none;
+		}
 	</style>
 </head>
 <body>
@@ -60,11 +72,33 @@
 			<div class="toggleButton active" id="tbOutput">Output</div>
 		</div>
 	</div>
+	<div id="bodyContainer">
+		<textarea class="panel" id="htmlPanel">This is HTML</textarea>
+		<iframe class="panel" id="outputPanel"></iframe>
+	</div>
+
 	<script type="text/javascript">
+		//Hover fn, highlights button upon hover
 		$('.toggleButton').hover(function () {
 			$(this).addClass('highlightedButton');
 		}, function () {
 			$(this).removeClass('highlightedButton');
+		});
+		//Click fn, change color of clicked button
+		$('.toggleButton').click(function () {
+			$(this).toggleClass('active');
+			$(this).removeClass('highlightedButton');
+		});
+		//panel height, width
+		$('.panel').height($(window).height() - ($('#header').height() + 15));
+		$('.panel').width(($(window).width() / 2) - 10);
+
+		//iframe changes when change occurs in htmlPanel
+		$("document").ready(function () {
+			$("iframe").contents().find("html").html($('#htmlPanel').val());			
+		});
+		$("#htmlPanel").on('change keyup paste', function () {
+			$("iframe").contents().find("html").html($('#htmlPanel').val());			
 		});
 	</script>
 </body>
