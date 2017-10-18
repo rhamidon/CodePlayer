@@ -51,14 +51,17 @@
 		.panel {
 			float: left;
 			width: 50%;
-		}
-		#htmlPanel {
+			border-left: none;
+			padding: 0;
+			margin: 0;
 			resize: none;
 			border-top: none;
 			border-color: grey;
 		}
 		iframe {
 			border: none;
+			padding: 0;
+			margin: 0;
 		}
 		.hidden {
 			display: none;
@@ -101,17 +104,25 @@
 			var activePanelsCount = 4 - $(".hidden").length;
 			$('.panel').width(($(window).width() / activePanelsCount) - 10);
 		});
+
 		//panel height, width
 		$('.panel').height($(window).height() - ($('#header').height() + 15));
 		$('.panel').width(($(window).width() / 2) - 10);
 
 		//iframe changes when change occurs in htmlPanel
 		$("document").ready(function () {
-			$("iframe").contents().find("html").html($('#htmlPanel').val());			
+			updateOutput();
 		});
-		$("#htmlPanel").on('change keyup paste', function () {
-			$("iframe").contents().find("html").html($('#htmlPanel').val());			
-		});
+		$("#htmlPanel, #cssPanel").on('change keyup paste', function () {
+			updateOutput();
+		});			
+		function updateOutput() {	
+			$("iframe").contents().find("html").html($('#htmlPanel').val());
+			var htmlContent = $('#htmlPanel').val();
+			var cssContent = $("#cssPanel").val();
+			var pageContent = "<html><head><style type='text/css'> "+ cssContent +"</style></head><body>" + htmlContent + "</body></html>";
+			$("iframe").contents().find("html").html(pageContent);
+		}
 	</script>
 </body>
 </html>
