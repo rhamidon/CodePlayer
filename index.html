@@ -77,8 +77,8 @@
 	</div>
 	<div id="bodyContainer">
 		<textarea class="panel" id="htmlPanel">This is HTML</textarea>
-		<textarea class="panel" id="cssPanel"></textarea>
-		<textarea class="panel" id="javascriptPanel"></textarea>
+		<textarea class="panel hidden" id="cssPanel"></textarea>
+		<textarea class="panel hidden" id="javascriptPanel"></textarea>
 		<iframe class="panel" id="outputPanel"></iframe>
 	</div>
 
@@ -93,6 +93,13 @@
 		$('.toggleButton').click(function () {
 			$(this).toggleClass('active');
 			$(this).removeClass('highlightedButton');
+			//toggle panels
+			var panel = $(this).attr("id");
+			panel = panel.split("tb")[1].toLowerCase() + "Panel";
+			$("#" + panel).toggleClass("hidden");
+			//change width of panels based on noofactivePanel
+			var activePanelsCount = 4 - $(".hidden").length;
+			$('.panel').width(($(window).width() / activePanelsCount) - 10);
 		});
 		//panel height, width
 		$('.panel').height($(window).height() - ($('#header').height() + 15));
