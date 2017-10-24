@@ -4,69 +4,7 @@
 	<title>CodePlayer</title>
 	<link rel="icon" href="icon.png">
 	<script type="text/javascript" src="jquery-3.2.1.js"></script>
-	<style type="text/css">
-		body {
-			font-family: sans-serif;
-			padding: 0;
-			margin: 0;
-		}
-		#header {
-			width: 100%;
-			background-color: #eee;
-			padding: 5px;
-			height: 30px;
-		}
-		#logo {
-			float: left;
-			font-weight: bold;
-			font-size: 120%;
-			padding: 3px 5px;
-		}
-		#buttonContainer {
-			width: 233px;
-			margin: 0 auto;
-		}
-		.toggleButton {
-			float: left;
-			border: 1px solid grey;
-			padding: 5px;
-			border-right: none;
-			font-size: 90%;
-		}
-		#tbHTML {
-			border-top-left-radius: 4px;
-			border-bottom-left-radius: 4px;
-		}
-		#tbOutput {
-			border-right: 1px solid grey;
-			border-top-right-radius: 4px;
-			border-bottom-right-radius: 4px;
-		}
-		.active {
-			background-color: #E8F2FF;
-		}
-		.highlightedButton {
-			background-color: grey;
-		}
-		.panel {
-			float: left;
-			width: 50%;
-			border-left: none;
-			padding: 0;
-			margin: 0;
-			resize: none;
-			border-top: none;
-			border-color: grey;
-		}
-		iframe {
-			border: none;
-			padding: 0;
-			margin: 0;
-		}
-		.hidden {
-			display: none;
-		}
-	</style>
+	<link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
 	<div id="header">
@@ -79,50 +17,12 @@
 		</div>
 	</div>
 	<div id="bodyContainer">
-		<textarea class="panel" id="htmlPanel">This is HTML</textarea>
-		<textarea class="panel hidden" id="cssPanel"></textarea>
-		<textarea class="panel hidden" id="javascriptPanel"></textarea>
+		<textarea class="panel" id="htmlPanel"><p id="paragraph">This is HTML</p></textarea>
+		<textarea class="panel hidden" id="cssPanel">p { color: green; }</textarea>
+		<textarea class="panel hidden" id="javascriptPanel">document.getElementById('paragraph').innerHTML= "Hello";</textarea>
 		<iframe class="panel" id="outputPanel"></iframe>
 	</div>
 
-	<script type="text/javascript">
-		//Hover fn, highlights button upon hover
-		$('.toggleButton').hover(function () {
-			$(this).addClass('highlightedButton');
-		}, function () {
-			$(this).removeClass('highlightedButton');
-		});
-		//Click fn, change color of clicked button
-		$('.toggleButton').click(function () {
-			$(this).toggleClass('active');
-			$(this).removeClass('highlightedButton');
-			//toggle panels
-			var panel = $(this).attr("id");
-			panel = panel.split("tb")[1].toLowerCase() + "Panel";
-			$("#" + panel).toggleClass("hidden");
-			//change width of panels based on noofactivePanel
-			var activePanelsCount = 4 - $(".hidden").length;
-			$('.panel').width(($(window).width() / activePanelsCount) - 10);
-		});
-
-		//panel height, width
-		$('.panel').height($(window).height() - ($('#header').height() + 15));
-		$('.panel').width(($(window).width() / 2) - 10);
-
-		//iframe changes when change occurs in htmlPanel
-		$("document").ready(function () {
-			updateOutput();
-		});
-		$("#htmlPanel, #cssPanel").on('change keyup paste', function () {
-			updateOutput();
-		});			
-		function updateOutput() {	
-			$("iframe").contents().find("html").html($('#htmlPanel').val());
-			var htmlContent = $('#htmlPanel').val();
-			var cssContent = $("#cssPanel").val();
-			var pageContent = "<html><head><style type='text/css'> "+ cssContent +"</style></head><body>" + htmlContent + "</body></html>";
-			$("iframe").contents().find("html").html(pageContent);
-		}
-	</script>
+	<script type="text/javascript" src="script.js"></script>
 </body>
 </html>
